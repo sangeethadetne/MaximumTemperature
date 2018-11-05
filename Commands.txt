@@ -1,0 +1,22 @@
+
+results = load '/user/edureka_445719/sangeethadata/results' using PigStorage () as (stu_id:int,res:chararray); 
+
+describe results;
+
+student = load '/user/edureka_445719/sangeethadata/student' using PigStorage () as (stu_name:chararray,stu_id:int); 
+
+describe student;
+
+C = JOIN results by $0 LEFT OUTER, student BY $1;
+
+DUMP C;
+
+B = FILTER C BY res=='pass';
+
+ DUMP B;
+
+pass = FOREACH B GENERATE (stu_name,res);
+
+STORE pass into 'passedStudents';
+
+passedStudents is stored in "sangeethadata/" folder
